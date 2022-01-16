@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <title>PyCompiler</title>
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- First Half -->
+        <div class="col-md-6 p-0 h-md-100 first-half">
+            <div class="align-items-center h-md-100 p-5 justify-content-center contain">
+                <h1 class="title">Python Compiler</h1>
+                <form action="/runcode" method="post">
+                    <div class="form-group">
+                        <label for="codearea">Code Area</label>
+                        <textarea type="text" class="form-control" id="codearea" name="codearea" rows="10"
+                                  onkeydown="if (event.keyCode === 9){
+                        var v = this.value, s = this.selectionStart, e = this.selectionEnd;
+                        this.value = v.substring(0, s)+'\t'+v.substring(e);
+                        this.selectionStart = this.selectionEnd = s+1;
+                        return false;
+                      }">{{ code }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-right">Run</button>
+                    <div class="form-group result">
+                        <label for="output">Output</label>
+                        <textarea type="text" class="form-control" id="output" name="output" rows="4" disabled> {{ output }} </textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Second Half -->
+        <div class="col-md-6 p-0 h-md-100 second-half">
+            <!-- <div class="align-items-center h-md-100 p-5 justify-content-center">
+                <p>Hello</p>
+            </div> -->
+            <div class="animate-container"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,18 +1,19 @@
 import sys
-
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+import turtle
+
 
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
-@csrf_exempt
 def runcode(request):
-
     if request.method == "POST":
-        codearea_data = request.POST.get('codearea', False)
+        codearea_data = request.POST['codearea']
 
         try:
             original_stdout = sys.stdout
@@ -26,10 +27,27 @@ def runcode(request):
             sys.stdout = original_stdout
             output = e
 
+    return render(request, 'index.html', {"code": codearea_data, "output": output})
 
-    #finally return and render index page and send codedata and output to show on page
 
-    return render(request, 'index.html', {"code":codearea_data , "output":output})
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def api_python(request):
+    try:
+        codearea_data = request.data['codearea']
+        original_stdout = sys.stdout
+        sys.stdout = open('file.txt', 'w')  
+        exec(codearea_data)
+        sys.stdout.close()
+        sys.stdout = original_stdout 
+        output = open('file.txt', 'r').read()
+
+    except Exception as e:
+        sys.stdout = original_stdout
+        output = str(e)
+
+    return Response({'output': output})
+
 
 
 # from rest_framework.views import APIView
